@@ -22,7 +22,12 @@ class TasksListViewController: UITableViewController {
         title = currentTasksList.name
         filteringTasks()
     }
-
+    
+    @IBAction func addNewTask(_ sender: UIButton) {
+    }
+    @IBAction func editCurrentTask(_ sender: UIButton) {
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {

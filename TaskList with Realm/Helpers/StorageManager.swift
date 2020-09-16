@@ -13,9 +13,9 @@ let realm = try! Realm()
 
 class StorageManager {
     
-    static func saveTasksList(_ tasksLists: [TasksList]) {
+    static func saveTasksList(_ tasksList: TasksList) {
         try! realm.write {
-            realm.add(tasksLists)
+            realm.add(tasksList)
         }
     }
 

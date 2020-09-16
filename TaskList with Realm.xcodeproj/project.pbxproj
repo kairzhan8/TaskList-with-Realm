@@ -50,6 +50,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5539300D25110E0E001BFA78 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				55D3C0BB2510D80D0079FE4A /* LaunchScreen.storyboard */,
+				55D3C0B62510D8050079FE4A /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		5539300E25110E24001BFA78 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				55D3C0B02510D8050079FE4A /* AppDelegate.swift */,
+				55D3C0B22510D8050079FE4A /* SceneDelegate.swift */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
+		5539300F25110E2F001BFA78 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				55D3C0B92510D80D0079FE4A /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		5539301025110E5F001BFA78 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				553930052510DE05001BFA78 /* TasksListsViewController.swift */,
+				553930032510DDCE001BFA78 /* TasksListViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		5539301125110E6C001BFA78 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5539300B2510E0F8001BFA78 /* Task.swift */,
+				553930092510E047001BFA78 /* TasksList.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		5539301225110E76001BFA78 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				553930072510DE92001BFA78 /* StorageManager.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		55D3C0A42510D8050079FE4A = {
 			isa = PBXGroup;
 			children = (
@@ -71,17 +123,13 @@
 		55D3C0AF2510D8050079FE4A /* TaskList with Realm */ = {
 			isa = PBXGroup;
 			children = (
-				55D3C0B02510D8050079FE4A /* AppDelegate.swift */,
-				55D3C0B22510D8050079FE4A /* SceneDelegate.swift */,
-				55D3C0B62510D8050079FE4A /* Main.storyboard */,
-				55D3C0B92510D80D0079FE4A /* Assets.xcassets */,
-				55D3C0BB2510D80D0079FE4A /* LaunchScreen.storyboard */,
+				5539301125110E6C001BFA78 /* Models */,
+				5539301025110E5F001BFA78 /* Controllers */,
+				5539300E25110E24001BFA78 /* Supporting */,
+				5539300F25110E2F001BFA78 /* Resources */,
+				5539300D25110E0E001BFA78 /* Storyboards */,
+				5539301225110E76001BFA78 /* Helpers */,
 				55D3C0BE2510D80D0079FE4A /* Info.plist */,
-				553930032510DDCE001BFA78 /* TasksListViewController.swift */,
-				553930052510DE05001BFA78 /* TasksListsViewController.swift */,
-				553930072510DE92001BFA78 /* StorageManager.swift */,
-				553930092510E047001BFA78 /* TasksList.swift */,
-				5539300B2510E0F8001BFA78 /* Task.swift */,
 			);
 			path = "TaskList with Realm";
 			sourceTree = "<group>";

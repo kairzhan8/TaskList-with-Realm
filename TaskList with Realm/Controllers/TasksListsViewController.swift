@@ -18,29 +18,14 @@ class TasksListsViewController: UITableViewController {
         
         tasksLists = realm.objects(TasksList.self)
         
-//        let shoppingList = TasksList()
-//        shoppingList.name = "Shopping List"
-//
-//        let todaysTasks = TasksList(value: ["Today's tasks"])
-//
-//        let milk = Task(value: ["name":"Milk", "note":"10L"])
-//        let bread = Task(value: ["Bread"])
-//        let butter = Task(value: ["name":"Butter", "isCompleted": true])
-//
-//        let read = Task(value: ["name":"Read a book", "note":"25 pages"])
-//        let abs = Task(value: ["name":"Train abs", "isCompleted": true])
-//        let water = Task(value: ["name":"Drink water", "note":"2L"])
-//        let lesson = Task(value: ["name":"Watch lesson", "note":"2 lesssons", "isCompleted": true])
-//
-//        shoppingList.tasks.insert(contentsOf: [milk, bread, butter], at: 0)
-//        todaysTasks.tasks.insert(contentsOf: [read, abs, water, lesson], at: 0)
-//
-//        DispatchQueue.main.async {
-//            StorageManager.saveTasksList([shoppingList, todaysTasks])
-//        }
-        
     }
-
+    
+    @IBAction func addNewList(_ sender: UIButton) {
+        alertForAddAndUpdateList()
+    }
+    @IBAction func editCurrentList(_ sender: UIButton) {
+    }
+    
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasksLists.count
@@ -66,6 +51,27 @@ class TasksListsViewController: UITableViewController {
             tasksVC.currentTasksList = tasksList
         }
     }
-    
+}
 
+extension TasksListsViewController {
+    private func alertForAddAndUpdateList() {
+        let alert = UIAlertController(title: "New List", message: "Write a new value", preferredStyle: .alert)
+        var alertTextField: UITextField!
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let newList = alertTextField.text, !newList.isEmpty else { return }
+            let tasksList = TasksList()
+            tasksList.name = newList
+            
+            StorageManager.saveTasksList(tasksList)
+            self.tableView.insertRows(at: [IndexPath(row: self.tasksLists.count - 1, section: 0)], with: .automatic)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        alert.addTextField { (textField) in
+                   alertTextField = textField
+                   alertTextField.placeholder = "List name"
+               }
+        present(alert, animated: true)
+    }
 }
