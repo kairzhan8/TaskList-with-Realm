@@ -13,9 +13,11 @@ class TasksListViewController: UITableViewController {
     
     var currentTasksList: TasksList!
     
-    var currentTasks: Results<Task>!
-    var completedTasks: Results<Task>!
+    private var currentTasks: Results<Task>!
+    private var completedTasks: Results<Task>!
 
+    private var isEditingMode = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,6 +29,8 @@ class TasksListViewController: UITableViewController {
         alertForAddAndUpdateTask()
     }
     @IBAction func editCurrentTask(_ sender: UIButton) {
+        isEditingMode.toggle()
+        tableView.setEditing(isEditingMode, animated: true)
     }
     
     // MARK: - Table view data source
@@ -43,7 +47,6 @@ class TasksListViewController: UITableViewController {
         return section == 0 ? "Current Tasks" : "Completed Tasks"
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tasksList", for: indexPath)
 
@@ -56,6 +59,35 @@ class TasksListViewController: UITableViewController {
         return cell
     }
     
+    // MARK - Table view delegate
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let task = indexPath.section == 0 ? currentTasks[indexPath.row] : completedTasks[indexPath.row]
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
+            StorageManager.deleteTask(task)
+            self.filteringTasks()
+        }
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { (_, _, _) in
+            self.alertForAddAndUpdateTask(task)
+            self.filteringTasks()
+        }
+        
+        let title = task.isCompleted ? "Undone" : "Done"
+        let doneAction = UIContextualAction(style: .normal, title: title) { (_, _, _) in
+            StorageManager.makeDone(task)
+            self.filteringTasks()
+        }
+        
+        doneAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        editAction.backgroundColor = .orange
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteAction, doneAction, editAction])
+        
+        return swipeActions
+    }
+    
     private func filteringTasks() {
         currentTasks = currentTasksList.tasks.filter("isCompleted = false")
         completedTasks = currentTasksList.tasks.filter("isCompleted = true")
@@ -66,25 +98,43 @@ class TasksListViewController: UITableViewController {
 
 extension TasksListViewController {
     
-    private func alertForAddAndUpdateTask() {
+    private func alertForAddAndUpdateTask(_ taskName: Task? = nil) {
         
-        let alert = UIAlertController(title: "New Task", message: "Insert a new value", preferredStyle: .alert)
+        var title = "New task"
+        var doneButton = "Save"
+        
+        if taskName != nil {
+            title = "Edit task"
+            doneButton = "Update"
+        }
+        
+        let alert = UIAlertController(title: title, message: "Please insert new value", preferredStyle: .alert)
         
         var taskTextField: UITextField!
         var noteTextField: UITextField!
         
-        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+        let saveAction = UIAlertAction(title: doneButton, style: .default) { _ in
             guard let newTask = taskTextField.text, !newTask.isEmpty else { return }
             
-            let task = Task()
-            task.name = newTask
-            
-            if let note = noteTextField.text, !note.isEmpty {
-                task.note = note
+            if let taskName = taskName {
+                if let newNote = noteTextField.text, !newNote.isEmpty {
+                    StorageManager.editTask(taskName, newTaskName: newTask, newNoteName: newNote)
+                } else {
+                    StorageManager.editTask(taskName, newTaskName: newTask, newNoteName: "")
+                }
+                
+                self.filteringTasks()
+            } else {
+                let task = Task()
+                task.name = newTask
+                
+                if let note = noteTextField.text, !note.isEmpty {
+                    task.note = note
+                }
+                
+                StorageManager.saveTask(self.currentTasksList, task)
+                self.filteringTasks()
             }
-            
-            StorageManager.saveTask(self.currentTasksList, task)
-            self.filteringTasks()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         alert.addAction(saveAction)
@@ -92,10 +142,19 @@ extension TasksListViewController {
         alert.addTextField { (textField) in
             taskTextField = textField
             taskTextField.placeholder = "New Task"
+            
+            if taskName != nil {
+                taskTextField.text = taskName?.name
+            }
+            
         }
         alert.addTextField { (textField) in
             noteTextField = textField
             noteTextField.placeholder = "Note"
+            
+            if taskName != nil {
+                noteTextField.text = taskName?.note
+            }
         }
         
         present(alert, animated: true)
