@@ -49,13 +49,8 @@ class TasksListsViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tasksLists", for: indexPath)
 
         let tasksList = tasksLists[indexPath.row]
-        cell.textLabel?.text = tasksList.name
-        let uncompletedTasks = tasksList.tasks.filter("isCompleted = false")
-        if uncompletedTasks.count == 0 {
-            cell.detailTextLabel?.text = "✅"
-        } else {
-            cell.detailTextLabel!.text = String(uncompletedTasks.count)
-        }
+        
+        cell.configure(tasksList)
 
         return cell
     }
