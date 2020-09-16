@@ -54,12 +54,18 @@ class TasksListsViewController: UITableViewController {
         let currentList = self.tasksLists[indexPath.row]
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
-            
             StorageManager.deleteList(currentList)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         
-        let swipeActions = UISwipeActionsConfiguration(actions: [deleteAction])
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { (_, _, _) in
+            
+            self.alertForAddAndUpdateList(currentList) {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        }
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         
         return swipeActions
     }
@@ -78,20 +84,37 @@ class TasksListsViewController: UITableViewController {
 
 extension TasksListsViewController {
     
-    private func alertForAddAndUpdateList() {
+    private func alertForAddAndUpdateList(_ listName: TasksList? = nil, complition: (() -> Void)? = nil) {
         
-        let alert = UIAlertController(title: "New List", message: "Write a new value", preferredStyle: .alert)
+        var title = "New List"
+        var doneButton = "Save"
+        
+        if listName != nil {
+            title = "Edit List"
+            doneButton = "Update"
+        }
+        
+        let alert = UIAlertController(title: title, message: "Please insert new value", preferredStyle: .alert)
         
         var alertTextField: UITextField!
         
-        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+        let saveAction = UIAlertAction(title: doneButton, style: .default) { _ in
             guard let newList = alertTextField.text, !newList.isEmpty else { return }
-            let tasksList = TasksList()
-            tasksList.name = newList
             
-            StorageManager.saveTasksList(tasksList)
-            self.tableView.insertRows(at: [IndexPath(row: self.tasksLists.count - 1, section: 0)], with: .automatic)
+            if let listName = listName {
+                StorageManager.editList(listName, newListName: newList)
+                if complition != nil {
+                    complition!()
+                }
+            } else {
+                let tasksList = TasksList()
+                tasksList.name = newList
+                
+                StorageManager.saveTasksList(tasksList)
+                self.tableView.insertRows(at: [IndexPath(row: self.tasksLists.count - 1, section: 0)], with: .automatic)
+            }
         }
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         
         alert.addAction(saveAction)
@@ -99,6 +122,10 @@ extension TasksListsViewController {
         alert.addTextField { (textField) in
                    alertTextField = textField
                    alertTextField.placeholder = "List name"
+        }
+        
+        if let listName = listName {
+            alertTextField.text = listName.name
         }
         
         present(alert, animated: true)
