@@ -17,7 +17,7 @@ class TasksListsViewController: UITableViewController {
         super.viewDidLoad()
         
         tasksLists = realm.objects(TasksList.self)
-        
+        navigationItem.leftBarButtonItem = editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,8 +27,6 @@ class TasksListsViewController: UITableViewController {
     
     @IBAction func addNewList(_ sender: UIButton) {
         alertForAddAndUpdateList()
-    }
-    @IBAction func editCurrentList(_ sender: UIButton) {
     }
     
     // MARK: - Table view data source
@@ -42,7 +40,8 @@ class TasksListsViewController: UITableViewController {
 
         let tasksList = tasksLists[indexPath.row]
         cell.textLabel?.text = tasksList.name
-        cell.detailTextLabel!.text = String(tasksList.tasks.count)
+        let uncompletedTasks = tasksList.tasks.filter("isCompleted = false")
+        cell.detailTextLabel!.text = String(uncompletedTasks.count)
 
         return cell
     }
@@ -59,13 +58,20 @@ class TasksListsViewController: UITableViewController {
         }
         
         let editAction = UIContextualAction(style: .normal, title: "Edit") { (_, _, _) in
-            
             self.alertForAddAndUpdateList(currentList) {
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }
         }
         
-        let swipeActions = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        let doneAction = UIContextualAction(style: .normal, title: "Done") { (_, _, _) in
+            StorageManager.makeAllDone(currentList)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        
+        doneAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        editAction.backgroundColor = .orange
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteAction, doneAction, editAction])
         
         return swipeActions
     }

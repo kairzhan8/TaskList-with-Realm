@@ -35,6 +35,12 @@ class StorageManager {
         }
     }
     
+    static func makeAllDone(_ tasksList: TasksList) {
+        try! realm.write {
+            tasksList.tasks.setValue(true, forKey: "isCompleted")
+        }
+    }
+    
     // MARK: - Tasks methods
     
     static func saveTask(_ tasksList: TasksList, _ task: Task) {

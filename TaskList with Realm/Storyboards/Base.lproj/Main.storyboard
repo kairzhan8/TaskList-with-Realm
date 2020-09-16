@@ -61,17 +61,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Tasks Lists" id="ieJ-a0-1wD">
-                        <barButtonItem key="leftBarButtonItem" id="m7b-oF-I8n">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6XG-I8-eh7">
-                                <rect key="frame" x="20" y="5" width="92" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Edit"/>
-                                <connections>
-                                    <action selector="editCurrentList:" destination="EmA-Sc-muY" eventType="touchUpInside" id="s15-5x-kq1"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" id="Tig-Ms-4Oq">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Ur5-fq-2TX">
                                 <rect key="frame" x="302" y="0.0" width="92" height="44"/>
