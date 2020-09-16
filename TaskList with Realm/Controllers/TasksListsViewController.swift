@@ -20,6 +20,11 @@ class TasksListsViewController: UITableViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     @IBAction func addNewList(_ sender: UIButton) {
         alertForAddAndUpdateList()
     }
@@ -54,9 +59,13 @@ class TasksListsViewController: UITableViewController {
 }
 
 extension TasksListsViewController {
+    
     private func alertForAddAndUpdateList() {
+        
         let alert = UIAlertController(title: "New List", message: "Write a new value", preferredStyle: .alert)
+        
         var alertTextField: UITextField!
+        
         let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
             guard let newList = alertTextField.text, !newList.isEmpty else { return }
             let tasksList = TasksList()
@@ -66,12 +75,14 @@ extension TasksListsViewController {
             self.tableView.insertRows(at: [IndexPath(row: self.tasksLists.count - 1, section: 0)], with: .automatic)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
         alert.addTextField { (textField) in
                    alertTextField = textField
                    alertTextField.placeholder = "List name"
-               }
+        }
+        
         present(alert, animated: true)
     }
 }

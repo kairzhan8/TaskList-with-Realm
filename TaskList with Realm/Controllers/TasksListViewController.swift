@@ -24,6 +24,7 @@ class TasksListViewController: UITableViewController {
     }
     
     @IBAction func addNewTask(_ sender: UIButton) {
+        alertForAddAndUpdateTask()
     }
     @IBAction func editCurrentTask(_ sender: UIButton) {
     }
@@ -61,4 +62,43 @@ class TasksListViewController: UITableViewController {
         tableView.reloadData()
     }
 
+}
+
+extension TasksListViewController {
+    
+    private func alertForAddAndUpdateTask() {
+        
+        let alert = UIAlertController(title: "New Task", message: "Insert a new value", preferredStyle: .alert)
+        
+        var taskTextField: UITextField!
+        var noteTextField: UITextField!
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let newTask = taskTextField.text, !newTask.isEmpty else { return }
+            
+            let task = Task()
+            task.name = newTask
+            
+            if let note = noteTextField.text, !note.isEmpty {
+                task.note = note
+            }
+            
+            StorageManager.saveTask(self.currentTasksList, task)
+            self.filteringTasks()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        alert.addTextField { (textField) in
+            taskTextField = textField
+            taskTextField.placeholder = "New Task"
+        }
+        alert.addTextField { (textField) in
+            noteTextField = textField
+            noteTextField.placeholder = "Note"
+        }
+        
+        present(alert, animated: true)
+        
+    }
 }

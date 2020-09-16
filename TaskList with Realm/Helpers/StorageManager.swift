@@ -18,5 +18,11 @@ class StorageManager {
             realm.add(tasksList)
         }
     }
+    
+    static func saveTask(_ tasksList: TasksList, _ task: Task) {
+        try! realm.write {
+            tasksList.tasks.append(task)
+        }
+    }
 
 }

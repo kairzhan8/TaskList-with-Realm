@@ -146,7 +146,7 @@
                                                     <action selector="editCurrentTask:" destination="oVM-mO-tBR" eventType="touchUpInside" id="B1h-gR-EdJ"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k2N-JD-xTG">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k2N-JD-xTG">
                                                 <rect key="frame" x="38" y="0.0" width="30" height="48"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="30"/>
                                                 <state key="normal" title="+"/>
@@ -157,9 +157,13 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="wRY-Xo-rGk" firstAttribute="leading" secondItem="eLd-NF-zMQ" secondAttribute="leading" constant="24" id="2EY-bC-8X5"/>
+                                    <constraint firstAttribute="bottom" secondItem="wRY-Xo-rGk" secondAttribute="bottom" constant="-7.5" id="4zX-RF-9gM"/>
+                                    <constraint firstAttribute="trailing" secondItem="wRY-Xo-rGk" secondAttribute="trailing" id="Qvl-P2-GBb"/>
                                     <constraint firstItem="wRY-Xo-rGk" firstAttribute="centerY" secondItem="eLd-NF-zMQ" secondAttribute="centerY" id="flU-Gw-3dd"/>
+                                    <constraint firstItem="wRY-Xo-rGk" firstAttribute="top" secondItem="eLd-NF-zMQ" secondAttribute="top" constant="-7.5" id="hZm-Ft-rES"/>
                                     <constraint firstAttribute="trailing" secondItem="wRY-Xo-rGk" secondAttribute="trailing" id="uuO-L6-h3s"/>
                                 </constraints>
                             </view>
